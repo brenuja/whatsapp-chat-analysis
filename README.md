@@ -1,7 +1,11 @@
 # WhatsApp Chat Analyzer
 
+🌐 **Live Demo**: [Click here to try the app](https://whatsapp-chat-analyzer-x.onrender.com)
+
 ## Overview
 WhatsApp Chat Analyzer is a Streamlit-based web application that allows users to upload their WhatsApp chat files and gain insights into their messaging behavior. It provides statistics such as message count, word usage, media sharing, and activity timelines.
+
+👉 Try it live here: [https://whatsapp-chat-analyzer-x.onrender.com](https://whatsapp-chat-analyzer-x.onrender.com)
 
 ## Features
 - **Upload and Analyze WhatsApp Chats**: Supports .txt file uploads of chat history.
@@ -68,7 +72,3 @@ Inspired by data visualization techniques and chat analytics.
 
 ## Author
 Developed by Renuja.
-
----
-
-
