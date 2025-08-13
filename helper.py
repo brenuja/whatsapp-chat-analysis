@@ -30,9 +30,13 @@ def fetch_stats(selected_user, df):
     return num_messages, len(words), num_media_messages, len(links)
 
 def most_busy_users(df):
-    x = df['user'].value_counts().head()
-    df = round((df['user'].value_counts() / df.shape[0]) * 100, 2).reset_index().rename(
-        columns={'user': 'name', 'count': 'percent'})
+    temp = df[df['user'] != 'group_notification']
+    temp = temp[~temp['message'].isin(["<Media omitted>\n", "This message was deleted\n"])]
+
+    x = temp['user'].value_counts().head()
+    df = temp['user'].value_counts(normalize=True).mul(100).round(2).reset_index()
+    df.columns = ['name', 'percentage%']
+    
     return x, df
 
 def create_wordcloud(selected_user, df):
@@ -128,3 +132,4 @@ def activity_heatmap(selected_user, df):
     heatmap_data = df.pivot_table(index='day_name', columns='period', values='message', aggfunc='count').fillna(0)
 
     return heatmap_data
+
