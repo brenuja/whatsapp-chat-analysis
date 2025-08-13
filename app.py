@@ -171,6 +171,7 @@ if uploaded_file is not None:
                     emoji_df[1].head(),
                     labels=[''] * len(emoji_df[0].head()),  # Empty labels initially
                     autopct='%0.2f%%',
+                    textprops={'fontsize': 14},
                     startangle=90
                 )
 
@@ -184,22 +185,22 @@ if uploaded_file is not None:
 
                             # Calculate position for emoji (outside the pie)
                             angle = wedges[i].theta1 + (wedges[i].theta2 - wedges[i].theta1) / 2
-                            x = 1.3 * np.cos(np.radians(angle))
-                            y = 1.3 * np.sin(np.radians(angle))
+                            x = 1.2 * np.cos(np.radians(angle))
+                            y = 1.2 * np.sin(np.radians(angle))
 
                             # Add emoji image
-                            im = OffsetImage(img, zoom=0.15)
+                            im = OffsetImage(img, zoom= 0.08)
                             ab = AnnotationBbox(im, (x, y), frameon=False, pad=0)
                             ax.add_artist(ab)
 
                             # Add count text next to emoji
-                            ax.text(x * 1.2, y * 1.2, f'{count}', ha='center', va='center', fontsize=10)
+                            # ax.text(x * 1.2, y * 1.2, f'{count}', ha='center', va='center', fontsize=10)
                     except Exception as e:
                         # Fallback: use text if emoji image not found
                         angle = wedges[i].theta1 + (wedges[i].theta2 - wedges[i].theta1) / 2
                         x = 1.3 * np.cos(np.radians(angle))
                         y = 1.3 * np.sin(np.radians(angle))
-                        ax.text(x, y, emoji_char, ha='center', va='center', fontsize=20)
+                        # ax.text(x, y, emoji_char, ha='center', va='center', fontsize=20)
 
                 ax.set_title('Most Used Emojis', fontsize=16, pad=20)
                 plt.tight_layout()
