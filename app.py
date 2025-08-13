@@ -144,11 +144,11 @@ if uploaded_file is not None:
         emoji_df = helper.emoji_helper(selected_user, df)
         col1, col2 = st.columns(2)
 
-         with col1:
-            st.dataframe(emoji_df)
-         with col2:
-        if not emoji_df.empty:
-         fig, ax = plt.subplots(figsize=(8, 8))
+          with col1:
+             st.dataframe(emoji_df)
+          with col2:
+          if not emoji_df.empty:
+          fig, ax = plt.subplots(figsize=(8, 8))
         
         # Create pie chart without emoji labels first
         wedges, texts, autotexts = ax.pie(
@@ -208,6 +208,7 @@ if uploaded_file is not None:
             # st.pyplot(fig)
 
       
+
 
 
 
