@@ -4,7 +4,7 @@ from sympy import rotations
 import matplotlib.font_manager as fm
 import seaborn as sns
 import preprocessor, helper
-#new changes for emoji anaylsis
+#new
 from imojify import imojify
 from matplotlib.offsetbox import OffsetImage, AnnotationBbox
 import numpy as np
@@ -138,58 +138,6 @@ if uploaded_file is not None:
         # plt.xticks(rotation = 'vertical')
 
         st.pyplot(fig)
-        
-        #emoji analysis
-        st.title('Emoji Analysis')
-        emoji_df = helper.emoji_helper(selected_user, df)
-        col1, col2 = st.columns(2)
-
-          with col1:
-             st.dataframe(emoji_df)
-          with col2:
-          if not emoji_df.empty:
-          fig, ax = plt.subplots(figsize=(8, 8))
-        
-        # Create pie chart without emoji labels first
-        wedges, texts, autotexts = ax.pie(
-            emoji_df[1].head(), 
-            labels=[''] * len(emoji_df[0].head()),  # Empty labels initially
-            autopct='%0.2f%%',
-            startangle=90
-        )
-        
-        # Add emoji images to the pie chart
-        for i, (emoji_char, count) in enumerate(zip(emoji_df[0].head(), emoji_df[1].head())):
-            try:
-                # Get emoji image path
-                img_path = imojify.get_img_path(emoji_char)
-                if img_path:
-                    img = plt.imread(img_path)
-                    
-                    # Calculate position for emoji (outside the pie)
-                    angle = wedges[i].theta1 + (wedges[i].theta2 - wedges[i].theta1) / 2
-                    x = 1.3 * np.cos(np.radians(angle))
-                    y = 1.3 * np.sin(np.radians(angle))
-                    
-                    # Add emoji image
-                    im = OffsetImage(img, zoom=0.15)
-                    ab = AnnotationBbox(im, (x, y), frameon=False, pad=0)
-                    ax.add_artist(ab)
-                    
-                    # Add count text next to emoji
-                    ax.text(x*1.2, y*1.2, f'{count}', ha='center', va='center', fontsize=10)
-            except Exception as e:
-                # Fallback: use text if emoji image not found
-                angle = wedges[i].theta1 + (wedges[i].theta2 - wedges[i].theta1) / 2
-                x = 1.3 * np.cos(np.radians(angle))
-                y = 1.3 * np.sin(np.radians(angle))
-                ax.text(x, y, emoji_char, ha='center', va='center', fontsize=20)
-        
-        ax.set_title('Most Used Emojis', fontsize=16, pad=20)
-        plt.tight_layout()
-        st.pyplot(fig)
-    else:
-        st.write("No emojis found in the selected conversation.")
 
 
         #emoji analysis
@@ -197,21 +145,65 @@ if uploaded_file is not None:
         # st.title('Emoji Analysis')
         # emoji_df = helper.emoji_helper(selected_user, df)
         # col1, col2 = st.columns(2)
-
+        #
         # with col1:
         #     st.dataframe(emoji_df)
         # with col2:
-
+        #
         #     plt.rcParams['font.family'] = 'Segoe UI Emoji'
-            # fig, ax = plt.subplots()
-            # ax.pie(emoji_df[1].head(), labels=emoji_df[0].head(), autopct = '%0.2f')
-            # st.pyplot(fig)
+        #     fig, ax = plt.subplots()
+        #     ax.pie(emoji_df[1].head(), labels=emoji_df[0].head(), autopct = '%0.2f')
+        #     st.pyplot(fig)
 
-      
+        # emoji analysis
+        st.title('Emoji Analysis')
+        emoji_df = helper.emoji_helper(selected_user, df)
+        col1, col2 = st.columns(2)
 
+        with col1:
+            st.dataframe(emoji_df)
+        with col2:
+            if not emoji_df.empty:
+                fig, ax = plt.subplots(figsize=(8, 8))
 
+                # Create pie chart without emoji labels first
+                wedges, texts, autotexts = ax.pie(
+                    emoji_df[1].head(),
+                    labels=[''] * len(emoji_df[0].head()),  # Empty labels initially
+                    autopct='%0.2f%%',
+                    startangle=90
+                )
 
+                # Add emoji images to the pie chart
+                for i, (emoji_char, count) in enumerate(zip(emoji_df[0].head(), emoji_df[1].head())):
+                    try:
+                        # Get emoji image path
+                        img_path = imojify.get_img_path(emoji_char)
+                        if img_path:
+                            img = plt.imread(img_path)
 
+                            # Calculate position for emoji (outside the pie)
+                            angle = wedges[i].theta1 + (wedges[i].theta2 - wedges[i].theta1) / 2
+                            x = 1.3 * np.cos(np.radians(angle))
+                            y = 1.3 * np.sin(np.radians(angle))
 
+                            # Add emoji image
+                            im = OffsetImage(img, zoom=0.15)
+                            ab = AnnotationBbox(im, (x, y), frameon=False, pad=0)
+                            ax.add_artist(ab)
 
+                            # Add count text next to emoji
+                            ax.text(x * 1.2, y * 1.2, f'{count}', ha='center', va='center', fontsize=10)
+                    except Exception as e:
+                        # Fallback: use text if emoji image not found
+                        angle = wedges[i].theta1 + (wedges[i].theta2 - wedges[i].theta1) / 2
+                        x = 1.3 * np.cos(np.radians(angle))
+                        y = 1.3 * np.sin(np.radians(angle))
+                        ax.text(x, y, emoji_char, ha='center', va='center', fontsize=20)
+
+                ax.set_title('Most Used Emojis', fontsize=16, pad=20)
+                plt.tight_layout()
+                st.pyplot(fig)
+            else:
+                st.write("No emojis found in the selected conversation.")
 
