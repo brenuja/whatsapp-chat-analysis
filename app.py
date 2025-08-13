@@ -138,34 +138,17 @@ if uploaded_file is not None:
         # plt.xticks(rotation = 'vertical')
 
         st.pyplot(fig)
-
-
+        
         #emoji analysis
+        st.title('Emoji Analysis')
+        emoji_df = helper.emoji_helper(selected_user, df)
+        col1, col2 = st.columns(2)
 
-        # st.title('Emoji Analysis')
-        # emoji_df = helper.emoji_helper(selected_user, df)
-        # col1, col2 = st.columns(2)
-
-        # with col1:
-        #     st.dataframe(emoji_df)
-        # with col2:
-
-        #     plt.rcParams['font.family'] = 'Segoe UI Emoji'
-            # fig, ax = plt.subplots()
-            # ax.pie(emoji_df[1].head(), labels=emoji_df[0].head(), autopct = '%0.2f')
-            # st.pyplot(fig)
-
-
-#emoji analysis
-st.title('Emoji Analysis')
-emoji_df = helper.emoji_helper(selected_user, df)
-col1, col2 = st.columns(2)
-
-with col1:
-    st.dataframe(emoji_df)
-with col2:
-    if not emoji_df.empty:
-        fig, ax = plt.subplots(figsize=(8, 8))
+         with col1:
+            st.dataframe(emoji_df)
+         with col2:
+        if not emoji_df.empty:
+         fig, ax = plt.subplots(figsize=(8, 8))
         
         # Create pie chart without emoji labels first
         wedges, texts, autotexts = ax.pie(
@@ -207,5 +190,27 @@ with col2:
         st.pyplot(fig)
     else:
         st.write("No emojis found in the selected conversation.")
+
+
+        #emoji analysis
+
+        # st.title('Emoji Analysis')
+        # emoji_df = helper.emoji_helper(selected_user, df)
+        # col1, col2 = st.columns(2)
+
+        # with col1:
+        #     st.dataframe(emoji_df)
+        # with col2:
+
+        #     plt.rcParams['font.family'] = 'Segoe UI Emoji'
+            # fig, ax = plt.subplots()
+            # ax.pie(emoji_df[1].head(), labels=emoji_df[0].head(), autopct = '%0.2f')
+            # st.pyplot(fig)
+
+      
+
+
+
+
 
 
