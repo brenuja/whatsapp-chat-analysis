@@ -3,6 +3,7 @@ from urlextract import URLExtract
 from wordcloud import WordCloud
 from collections import Counter
 import emoji
+from imojify import imojify
 
 extractor = URLExtract()
 
@@ -84,6 +85,45 @@ def emoji_helper(selected_user, df):
 
     return emoji_df
 
+#new func
+def emoji_helper_with_imojify(selected_user, df):
+    """
+    Enhanced emoji helper function that works better with imojify
+    """
+    if selected_user != 'Overall':
+        df = df[df['user'] == selected_user]
+
+    emojis = []
+    for message in df['message']:
+        # Extract emojis from message
+        emojis.extend([c for c in message if emoji.is_emoji(c)])
+
+    if not emojis:
+        return pd.DataFrame(columns=[0, 1])  # Return empty DataFrame with correct columns
+    
+    emoji_counts = Counter(emojis)
+    
+    # Filter out emojis that might not be supported by imojify
+    supported_emojis = {}
+    for emoji_char, count in emoji_counts.items():
+        try:
+            # Test if imojify can handle this emoji
+            img_path = imojify.get_img_path(emoji_char)
+            if img_path:
+                supported_emojis[emoji_char] = count
+        except:
+            # Skip emojis that imojify can't handle
+            continue
+    
+    if not supported_emojis:
+        return pd.DataFrame(columns=[0, 1])
+    
+    emoji_df = pd.DataFrame(list(supported_emojis.items()), columns=[0, 1])
+    emoji_df = emoji_df.sort_values(by=1, ascending=False).reset_index(drop=True)
+    
+    return emoji_df
+
+
 def monthly_timeline(selected_user, df):
 
     if selected_user != 'Overall':
@@ -132,4 +172,5 @@ def activity_heatmap(selected_user, df):
     heatmap_data = df.pivot_table(index='day_name', columns='period', values='message', aggfunc='count').fillna(0)
 
     return heatmap_data
+
 
